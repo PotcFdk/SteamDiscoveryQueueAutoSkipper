@@ -5,7 +5,7 @@
 // @description Auto-clicks the "Next in Queue" button in Steam Discovery Queues.
 // @include     http://store.steampowered.com/app/*
 // @include     https://store.steampowered.com/app/*
-// @version     0.0.1
+// @version     0.0.2
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -29,7 +29,14 @@
 
 // Is there a "Next in Queue" button?
 
-if (document.getElementsByClassName("next_in_queue_content")[0])
+var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
+
+if (btn)
 {
-	$J('#next_in_queue_form').submit();
+	var btn_text = btn.getElementsByTagName("span")[0];
+	if (btn_text)
+	{
+		btn_text.textContent = "Loading next item...";
+	}
+	btn.onclick.call (btn);
 }
