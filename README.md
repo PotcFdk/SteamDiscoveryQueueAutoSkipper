@@ -1,4 +1,4 @@
-# SteamDiscoveryQueueAutoSkipper
+# Steam Discovery Queue Auto-Skipper
 This userscript auto-clicks the "Next in Queue" button when it detects that you are viewing a Steam Discovery Queue item.
 
 ## Installation
