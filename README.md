@@ -4,7 +4,7 @@ This userscript auto-clicks the "Next in Queue" button when it detects that you 
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
 ## Why?
-During the [Steam Winter Sale](http://store.steampowered.com/winterfaq/) you get trading cards for going through your queue up to three times a day.  
+During the [Steam Summer Sale](http://store.steampowered.com/salefaq/) you get trading cards for going through your queue up to three times a day.  
 This script makes it easier to stay lazy.
 
 ## Installation
