@@ -9,7 +9,7 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore/next/*
 // @include     https://store.steampowered.com/explore/next/*
-// @version     0.1.4
+// @version     0.2.0
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -75,4 +75,20 @@ if (btn)
 	}
 	click (btn);
 	setInterval (function() { click (btn); }, 5000);
+}
+
+var app_agegate = document.getElementById("app_agegate");
+if (app_agegate)
+{
+	var btn_medium = app_agegate.getElementsByClassName("btn_medium");
+	if (btn_medium)
+	{
+		for (i = 0; i < btn_medium.length; i++)
+		{
+			if (btn_medium[i].textContent.includes ("Continue"))
+			{
+				click (btn_medium[i]);
+			}
+		}
+	}
 }
