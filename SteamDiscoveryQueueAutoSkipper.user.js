@@ -9,7 +9,7 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore/next/*
 // @include     https://store.steampowered.com/explore/next/*
-// @version     0.1.3
+// @version     0.1.4
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -34,8 +34,8 @@
 var page = document.getElementsByTagName("BODY")[0].innerHTML;
 
 if (page.length < 100
-	|| page.includes("An error occurred while processing your request")
-	|| page.includes("The Steam Store is experiencing some heavy load right now"))
+	|| page.includes ("An error occurred while processing your request")
+	|| page.includes ("The Steam Store is experiencing some heavy load right now"))
 {
 	location.reload();
 }
