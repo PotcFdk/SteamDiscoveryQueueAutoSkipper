@@ -27,7 +27,19 @@
 	limitations under the License.
 */
 
-// Is there a "Next in Queue" button?
+function click (obj)
+{
+	if (obj.fireEvent)
+	{
+		obj.fireEvent ('onclick');
+	}
+	else
+	{
+		var evObj = document.createEvent ('Events');
+		evObj.initEvent ('click', true, false);
+		obj.dispatchEvent (evObj);
+	}
+}
 
 var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
 
@@ -48,5 +60,5 @@ if (btn)
 			btn_text.textContent = "Finishing Queue...";
 		}
 	}
-	btn.onclick.call (btn);
+	click (btn);
 }
