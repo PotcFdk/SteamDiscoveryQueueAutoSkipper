@@ -5,7 +5,7 @@
 // @description Auto-clicks the "Next in Queue" button in Steam Discovery Queues.
 // @include     http://store.steampowered.com/app/*
 // @include     https://store.steampowered.com/app/*
-// @version     0.1.0
+// @version     0.1.1
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -29,7 +29,9 @@
 
 var page = document.getElementsByTagName("BODY")[0].innerHTML;
 
-if (page.length < 100 || page.contains("An error occurred while processing your request"))
+if (page.length < 100
+	|| page.contains("An error occurred while processing your request")
+	|| page.contains("The Steam Store is experiencing some heavy load right now"))
 {
 	location.reload();
 }
