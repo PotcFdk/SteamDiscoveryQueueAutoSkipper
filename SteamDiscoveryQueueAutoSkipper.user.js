@@ -9,7 +9,7 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore/next/*
 // @include     https://store.steampowered.com/explore/next/*
-// @version     0.2.0
+// @version     0.3.0
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -90,5 +90,15 @@ if (app_agegate)
 				click (btn_medium[i]);
 			}
 		}
+	}
+}
+
+var ageYear = document.getElementById("ageYear");
+if (ageYear)
+{
+	ageYear.value = 1985;
+	if (DoAgeGateSubmit)
+	{
+		DoAgeGateSubmit();
 	}
 }
