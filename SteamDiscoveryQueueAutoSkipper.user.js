@@ -27,6 +27,13 @@
 	limitations under the License.
 */
 
+var page = document.getElementsByTagName("BODY")[0].innerHTML;
+
+if (page.length < 100 || page.contains("An error occurred while processing your request"))
+{
+	location.reload();
+}
+
 function click (obj)
 {
 	if (obj.fireEvent)
@@ -61,4 +68,5 @@ if (btn)
 		}
 	}
 	click (btn);
+	setInterval (function() { click (btn); }, 5000);
 }
