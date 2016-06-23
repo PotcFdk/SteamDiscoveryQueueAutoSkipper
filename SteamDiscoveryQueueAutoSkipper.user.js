@@ -34,8 +34,8 @@
 var page = document.getElementsByTagName("BODY")[0].innerHTML;
 
 if (page.length < 100
-	|| page.contains("An error occurred while processing your request")
-	|| page.contains("The Steam Store is experiencing some heavy load right now"))
+	|| page.includes("An error occurred while processing your request")
+	|| page.includes("The Steam Store is experiencing some heavy load right now"))
 {
 	location.reload();
 }
