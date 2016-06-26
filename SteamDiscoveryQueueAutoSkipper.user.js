@@ -70,7 +70,6 @@ if (btn)
 		}
 	}
 	click (btn);
-	setInterval (function() { click (btn); }, 5000);
 }
 
 var app_agegate = document.getElementById ("app_agegate");
