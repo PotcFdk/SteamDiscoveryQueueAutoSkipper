@@ -42,16 +42,12 @@ if (page.length < 100
 
 function click (obj)
 {
-	if (obj.fireEvent)
-	{
-		obj.fireEvent ('onclick');
-	}
-	else
-	{
-		var evObj = document.createEvent ('Events');
-		evObj.initEvent ('click', true, false);
-		obj.dispatchEvent (evObj);
-	}
+	var evObj = new MouseEvent ('click');
+	obj.dispatchEvent (evObj);
+
+	window.addEventListener ('load', function() {
+		click (obj);
+	});
 }
 
 var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
