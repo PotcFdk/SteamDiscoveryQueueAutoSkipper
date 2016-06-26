@@ -77,10 +77,10 @@ if (btn)
 	setInterval (function() { click (btn); }, 5000);
 }
 
-var app_agegate = document.getElementById("app_agegate");
+var app_agegate = document.getElementById ("app_agegate");
 if (app_agegate)
 {
-	var btn_medium = app_agegate.getElementsByClassName("btn_medium");
+	var btn_medium = app_agegate.getElementsByClassName ("btn_medium");
 	if (btn_medium)
 	{
 		for (i = 0; i < btn_medium.length; i++)
@@ -93,7 +93,7 @@ if (app_agegate)
 	}
 }
 
-var ageYear = document.getElementById("ageYear");
+var ageYear = document.getElementById ("ageYear");
 if (ageYear)
 {
 	ageYear.value = 1985;
@@ -103,8 +103,8 @@ if (ageYear)
 	}
 }
 
-var nextQueue = document.getElementById("refresh_queue_btn") && (Number(document.getElementsByClassName('subtext')[0].innerHTML.substring(12,13)) >= 1);
-if (nextQueue)
+var refresh_queue_btn = document.getElementById ("refresh_queue_btn");
+if (refresh_queue_btn && (Number (document.getElementsByClassName ('subtext')[0].innerHTML.substring(12,13)) >= 1))
 {
-	click (document.getElementById("refresh_queue_btn"));
+	click (refresh_queue_btn);
 }
