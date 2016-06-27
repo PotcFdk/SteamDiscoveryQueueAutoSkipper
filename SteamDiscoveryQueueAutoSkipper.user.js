@@ -9,7 +9,7 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore*
 // @include     https://store.steampowered.com/explore*
-// @version     0.3.1
+// @version     0.4.0
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -42,16 +42,12 @@ if (page.length < 100
 
 function click (obj)
 {
-	if (obj.fireEvent)
-	{
-		obj.fireEvent ('onclick');
-	}
-	else
-	{
-		var evObj = document.createEvent ('Events');
-		evObj.initEvent ('click', true, false);
-		obj.dispatchEvent (evObj);
-	}
+	var evObj = new MouseEvent ('click');
+	obj.dispatchEvent (evObj);
+
+	window.addEventListener ('load', function() {
+		click (obj);
+	});
 }
 
 var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
@@ -74,13 +70,12 @@ if (btn)
 		}
 	}
 	click (btn);
-	setInterval (function() { click (btn); }, 5000);
 }
 
-var app_agegate = document.getElementById("app_agegate");
+var app_agegate = document.getElementById ("app_agegate");
 if (app_agegate)
 {
-	var btn_medium = app_agegate.getElementsByClassName("btn_medium");
+	var btn_medium = app_agegate.getElementsByClassName ("btn_medium");
 	if (btn_medium)
 	{
 		for (i = 0; i < btn_medium.length; i++)
@@ -93,7 +88,7 @@ if (app_agegate)
 	}
 }
 
-var ageYear = document.getElementById("ageYear");
+var ageYear = document.getElementById ("ageYear");
 if (ageYear)
 {
 	ageYear.value = 1985;
@@ -103,8 +98,8 @@ if (ageYear)
 	}
 }
 
-var nextQueue = document.getElementById("refresh_queue_btn") && (Number(document.getElementsByClassName('subtext')[0].innerHTML.substring(12,13)) >= 1);
-if (nextQueue)
+var refresh_queue_btn = document.getElementById ("refresh_queue_btn");
+if (refresh_queue_btn && (Number (document.getElementsByClassName ('subtext')[0].innerHTML.substring(12,13)) >= 1))
 {
-	click (document.getElementById("refresh_queue_btn"));
+	click (refresh_queue_btn);
 }
