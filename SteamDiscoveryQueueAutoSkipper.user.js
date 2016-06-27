@@ -87,14 +87,14 @@ function handleQueuePage()
 	
 	function ajax()
 	{
-		var next_in_queue_form = document.getElementById("next_in_queue_form");
+		var next_in_queue_form = document.getElementById ("next_in_queue_form");
 		var xhr = new XMLHttpRequest();
 		xhr.responseType = "document";
 		xhr.onreadystatechange = function()
 		{
 			if (xhr.readyState == 4 && xhr.status == 200)
 			{
-				var _2_next_in_queue_form = xhr.response.getElementById("next_in_queue_form");
+				var _2_next_in_queue_form = xhr.response.getElementById ("next_in_queue_form");
 				if (_2_next_in_queue_form && _2_next_in_queue_form.length)
 				{
 					next_in_queue_form.parentNode.innerHTML = _2_next_in_queue_form.parentNode.innerHTML;
@@ -102,7 +102,7 @@ function handleQueuePage()
 				}
 				else
 				{
-					location.href = next_in_queue_form.getAttribute("action");
+					location.href = next_in_queue_form.getAttribute ("action");
 				}
 			}
 			else if (xhr.readyState == 4)
@@ -122,11 +122,11 @@ function handleQueuePage()
 		xhr.open("POST", next_in_queue_form.getAttribute("action"), true);
 		
 		var form = new FormData();
-		form.append("sessionid", next_in_queue_form.sessionid.value);
-		form.append("appid_to_clear_from_queue", next_in_queue_form.appid_to_clear_from_queue.value);
-		form.append("snr", next_in_queue_form.snr.value);
+		form.append ("sessionid", next_in_queue_form.sessionid.value);
+		form.append ("appid_to_clear_from_queue", next_in_queue_form.appid_to_clear_from_queue.value);
+		form.append ("snr", next_in_queue_form.snr.value);
 		
-		xhr.send(form);
+		xhr.send (form);
 	}
 	
 	ajax();
