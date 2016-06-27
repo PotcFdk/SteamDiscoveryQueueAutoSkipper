@@ -31,6 +31,8 @@
 	limitations under the License.
 */
 
+// Handle error pages
+
 var page = document.getElementsByTagName("BODY")[0].innerHTML;
 
 if (page.length < 100
@@ -39,6 +41,8 @@ if (page.length < 100
 {
 	location.reload();
 }
+
+// Click helper
 
 function click (obj)
 {
@@ -50,6 +54,7 @@ function click (obj)
 	});
 }
 
+// Main queue-skipper
 
 function handleQueuePage()
 {
@@ -131,6 +136,9 @@ if (document.getElementsByClassName ("btn_next_in_queue").length)
 {
 	handleQueuePage();
 }
+
+// Automate agegate #1
+
 var app_agegate = document.getElementById ("app_agegate");
 if (app_agegate)
 {
@@ -146,6 +154,8 @@ if (app_agegate)
 		}
 	}
 }
+
+// Automate agegate #2
 
 var ageYear = document.getElementById ("ageYear");
 if (ageYear)
