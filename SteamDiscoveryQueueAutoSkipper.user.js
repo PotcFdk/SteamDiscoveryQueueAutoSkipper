@@ -84,6 +84,9 @@ else{
 						}else{
 							location.replace($('#next_in_queue_form').attr("action"));
 						}
+					},
+					error: function(){
+						location.replace($('#next_in_queue_form').attr("action"));
 					}
 				});
 			}
