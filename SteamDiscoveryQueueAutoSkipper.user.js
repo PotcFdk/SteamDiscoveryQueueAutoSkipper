@@ -50,28 +50,87 @@ function click (obj)
 	});
 }
 
-var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
 
-if (btn)
+function handleQueuePage()
 {
-	var btn_text = btn.getElementsByTagName ("span")[0];
-	var btn_subtext = document.getElementsByClassName ("queue_sub_text")[0];
-	if (btn_text)
+	function nextInQueueButton()
 	{
-		if (btn_subtext)
+		var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
+
+		if (btn)
 		{
-			btn_text.textContent = "Loading next item...";
-			btn_text.appendChild (document.createElement ("br"));
-			btn_text.appendChild (btn_subtext);
-		}
-		else
-		{
-			btn_text.textContent = "Finishing Queue...";
+			var btn_text = btn.getElementsByTagName ("span")[0];
+			var btn_subtext = document.getElementsByClassName ("queue_sub_text")[0];
+			if (btn_text)
+			{
+				if (btn_subtext)
+				{
+					btn_text.textContent = "Loading next item...";
+					btn_text.appendChild (document.createElement ("br"));
+					btn_text.appendChild (btn_subtext);
+				}
+				else
+				{
+					btn_text.textContent = "Finishing Queue...";
+				}
+			}
+			click (btn);
 		}
 	}
-	click (btn);
+
+	var ajax_failures = 0;
+	
+	function ajax()
+	{
+		var next_in_queue_form = document.getElementById("next_in_queue_form");
+		var xhr = new XMLHttpRequest();
+		xhr.responseType = "document";
+		xhr.onreadystatechange = function()
+		{
+			if (xhr.readyState == 4 && xhr.status == 200)
+			{
+				var _2_next_in_queue_form = xhr.response.getElementById("next_in_queue_form");
+				if (_2_next_in_queue_form && _2_next_in_queue_form.length)
+				{
+					next_in_queue_form.parentNode.innerHTML = _2_next_in_queue_form.parentNode.innerHTML;
+					handleQueuePage();
+				}
+				else
+				{
+					location.href = next_in_queue_form.getAttribute("action");
+				}
+			}
+			else if (xhr.readyState == 4)
+			{
+				if (ajax_failures++ < 3)
+				{
+					console.log ("Failed AJAX (HTTP status " + xhr.status + "). Retrying (" + ajax_failures + "/3)...");
+					ajax();
+				}
+				else
+				{
+					console.log ("Failed AJAX (HTTP status " + xhr.status + "). Retrying using the classic button click method...");
+					nextInQueueButton();
+				}
+			}
+		};
+		xhr.open("POST", next_in_queue_form.getAttribute("action"), true);
+		
+		var form = new FormData();
+		form.append("sessionid", next_in_queue_form.sessionid.value);
+		form.append("appid_to_clear_from_queue", next_in_queue_form.appid_to_clear_from_queue.value);
+		form.append("snr", next_in_queue_form.snr.value);
+		
+		xhr.send(form);
+	}
+	
+	ajax();
 }
 
+if (document.getElementsByClassName ("btn_next_in_queue").length)
+{
+	handleQueuePage();
+}
 var app_agegate = document.getElementById ("app_agegate");
 if (app_agegate)
 {
