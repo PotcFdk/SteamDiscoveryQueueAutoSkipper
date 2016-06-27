@@ -9,7 +9,7 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore*
 // @include     https://store.steampowered.com/explore*
-// @version     0.5.0
+// @version     0.5.1
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -58,27 +58,31 @@ function click (obj)
 
 function handleQueuePage()
 {
+	var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
+	
+	if (btn)
+	{
+		var btn_text = btn.getElementsByTagName ("span")[0];
+		var btn_subtext = document.getElementsByClassName ("queue_sub_text")[0];
+		if (btn_text)
+		{
+			if (btn_subtext)
+			{
+				btn_text.textContent = "Loading next item...";
+				btn_text.appendChild (document.createElement ("br"));
+				btn_text.appendChild (btn_subtext);
+			}
+			else
+			{
+				btn_text.textContent = "Finishing Queue...";
+			}
+		}
+	}
+	
 	function nextInQueueButton()
 	{
-		var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
-
 		if (btn)
 		{
-			var btn_text = btn.getElementsByTagName ("span")[0];
-			var btn_subtext = document.getElementsByClassName ("queue_sub_text")[0];
-			if (btn_text)
-			{
-				if (btn_subtext)
-				{
-					btn_text.textContent = "Loading next item...";
-					btn_text.appendChild (document.createElement ("br"));
-					btn_text.appendChild (btn_subtext);
-				}
-				else
-				{
-					btn_text.textContent = "Finishing Queue...";
-				}
-			}
 			click (btn);
 		}
 	}
