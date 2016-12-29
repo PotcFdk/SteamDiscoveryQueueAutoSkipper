@@ -9,7 +9,7 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore*
 // @include     https://store.steampowered.com/explore*
-// @version     0.5.1
+// @version     0.5.2
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -171,8 +171,37 @@ if (ageYear)
 	}
 }
 
+
 var refresh_queue_btn = document.getElementById ("refresh_queue_btn");
-if (refresh_queue_btn && (Number (document.getElementsByClassName ('subtext')[0].innerHTML.substring(12,13)) >= 1))
+var queue_count_subtext = document.getElementsByClassName('subtext')[0].innerHTML;
+var queue_count = parseInt(queue_count_subtext.replace(/[^0-9\.]/g, ''), 10);
+if (isNaN(queue_count))
+{	
+	var language = document.documentElement.getAttribute("lang");
+	switch(language)
+	{
+		case "de":
+			queue_count = queue_count_subtext.includes(" eine ") ? 1 : 0;
+			break;
+		case "fr":
+			queue_count = queue_count_subtext.includes(" une ") ? 1 : 0;
+			break;
+		case "it":
+			queue_count = queue_count_subtext.includes(" un'altra ") ? 1 : 0;
+			break;
+		case "pl":
+			queue_count = queue_count_subtext.includes(" jedną ") ? 1 : 0;
+			break;
+		case "ru":
+		case "uk":
+			queue_count = queue_count_subtext.includes(" одну ") ? 1 : 0;
+			break;
+		default:
+			queue_count = 0;
+	}
+}
+
+if (refresh_queue_btn && (queue_count >= 1))
 {
 	click (refresh_queue_btn);
 }
