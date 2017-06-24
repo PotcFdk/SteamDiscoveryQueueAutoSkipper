@@ -9,14 +9,14 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore*
 // @include     https://store.steampowered.com/explore*
-// @version     0.5.2
+// @version     0.6.0
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
 // ==/UserScript==
 
 /*
-	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2016
+	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2017
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -151,7 +151,7 @@ if (app_agegate)
 	{
 		for (i = 0; i < btn_medium.length; i++)
 		{
-			if (btn_medium[i].textContent.includes ("Continue"))
+			if (btn_medium[i].getAttribute("onclick").includes("HideAgeGate"))
 			{
 				click (btn_medium[i]);
 			}

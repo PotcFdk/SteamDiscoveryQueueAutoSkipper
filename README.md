@@ -6,7 +6,7 @@ It also unlocks age-restricted apps (i.e. this script supports automating 18+ co
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
 ## Why?
-During the [Steam Winter Sale](http://store.steampowered.com/SteamAwards/) you get trading cards for going through your queue up to three times a day.  
+During the [Steam Summer Sale](http://steamcommunity.com/my/stickers/) you get trading cards for going through your queue up to three times a day.  
 This script makes it easier to stay lazy.
 
 ## Sale
