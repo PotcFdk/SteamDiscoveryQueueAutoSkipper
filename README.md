@@ -1,7 +1,12 @@
 # Steam Discovery Queue Auto-Skipper
 This userscript auto-advances when it detects that you are viewing a Steam Discovery Queue item.  
-If your browser/setup supports it, it does this is a speedy way. If something goes wrong, it auto-retries and/or tries simulating a normal press on the "Next in Queue"-button. This should make sure that minor issues are automatically resolved.  
-It also unlocks age-restricted apps (i.e. this script supports automating 18+ confirmations) and runs through multiple discovery queues to get the maximum number of cards per day.  
+
+If your browser/setup supports it, it does this is a speedy way.  
+If something goes wrong, it auto-retries and/or tries simulating a normal press on the "Next in Queue"-button.  
+This should make sure that minor issues are automatically resolved.  
+
+Age-restricted apps are automatically unlocked (i.e. this script supports automating 18+ confirmations) and runs through multiple discovery queues to get the maximum number of cards per day.  
+This feature works outside of the discovery queues, too!
 
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
