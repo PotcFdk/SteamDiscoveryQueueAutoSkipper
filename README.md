@@ -15,7 +15,7 @@ During the [Steam Summer Sale](http://steamcommunity.com/my/stickers/) you get t
 This script makes it easier to stay lazy.
 
 ## Sale
-The script is optimized for the Steam Summer Sale 2017. Support for some of the functionality, including automation of multiple queues (two in this sale), along with other features, might not work with future sales. The script will be updated in such a case.
+The script is optimized for the Steam Summer Sale 2018. Support for some of the functionality, including automation of multiple queues (two in this sale), along with other features, might not work with future sales. The script will be updated in such a case.
 
 ## Installation
 1. Install [Greasemonkey](https://addons.mozilla.org/en-us/firefox/addon/greasemonkey/) (Firefox) or [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (Chrome) / [Tampermonkey](https://addons.opera.com/en/extensions/details/tampermonkey-beta/) (Opera).
