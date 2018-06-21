@@ -9,21 +9,21 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore*
 // @include     https://store.steampowered.com/explore*
-// @version     0.6.0
+// @version     0.6.1
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
 // ==/UserScript==
 
 /*
-	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2017
+	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2018
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
-	
+
 	http://www.apache.org/licenses/LICENSE-2.0
-	
+
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,7 +59,7 @@ function click (obj)
 function handleQueuePage()
 {
 	var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
-	
+
 	if (btn)
 	{
 		var btn_text = btn.getElementsByTagName ("span")[0];
@@ -78,7 +78,7 @@ function handleQueuePage()
 			}
 		}
 	}
-	
+
 	function nextInQueueButton()
 	{
 		if (btn)
@@ -88,7 +88,7 @@ function handleQueuePage()
 	}
 
 	var ajax_failures = 0;
-	
+
 	function ajax()
 	{
 		var next_in_queue_form = document.getElementById ("next_in_queue_form");
@@ -124,15 +124,15 @@ function handleQueuePage()
 			}
 		};
 		xhr.open("POST", next_in_queue_form.getAttribute("action"), true);
-		
+
 		var form = new FormData();
 		form.append ("sessionid", next_in_queue_form.sessionid.value);
 		form.append ("appid_to_clear_from_queue", next_in_queue_form.appid_to_clear_from_queue.value);
 		form.append ("snr", next_in_queue_form.snr.value);
-		
+
 		xhr.send (form);
 	}
-	
+
 	ajax();
 }
 
@@ -173,31 +173,34 @@ if (ageYear)
 
 
 var refresh_queue_btn = document.getElementById ("refresh_queue_btn");
-var queue_count_subtext = document.getElementsByClassName('subtext')[0].innerHTML;
-var queue_count = parseInt(queue_count_subtext.replace(/[^0-9\.]/g, ''), 10);
-if (isNaN(queue_count))
-{	
-	var language = document.documentElement.getAttribute("lang");
-	switch(language)
+var _subtext = document.getElementsByClassName('subtext')[0];
+if (_subtext) {
+	var queue_count_subtext = _subtext.innerHTML;
+	var queue_count = parseInt(queue_count_subtext.replace(/[^0-9\.]/g, ''), 10);
+	if (isNaN(queue_count))
 	{
-		case "de":
-			queue_count = queue_count_subtext.includes(" eine ") ? 1 : 0;
-			break;
-		case "fr":
-			queue_count = queue_count_subtext.includes(" une ") ? 1 : 0;
-			break;
-		case "it":
-			queue_count = queue_count_subtext.includes(" un'altra ") ? 1 : 0;
-			break;
-		case "pl":
-			queue_count = queue_count_subtext.includes(" jedną ") ? 1 : 0;
-			break;
-		case "ru":
-		case "uk":
-			queue_count = queue_count_subtext.includes(" одну ") ? 1 : 0;
-			break;
-		default:
-			queue_count = 0;
+		var language = document.documentElement.getAttribute("lang");
+		switch(language)
+		{
+			case "de":
+				queue_count = queue_count_subtext.includes(" eine ") ? 1 : 0;
+				break;
+			case "fr":
+				queue_count = queue_count_subtext.includes(" une ") ? 1 : 0;
+				break;
+			case "it":
+				queue_count = queue_count_subtext.includes(" un'altra ") ? 1 : 0;
+				break;
+			case "pl":
+				queue_count = queue_count_subtext.includes(" jedną ") ? 1 : 0;
+				break;
+			case "ru":
+			case "uk":
+				queue_count = queue_count_subtext.includes(" одну ") ? 1 : 0;
+				break;
+			default:
+				queue_count = 0;
+		}
 	}
 }
 
