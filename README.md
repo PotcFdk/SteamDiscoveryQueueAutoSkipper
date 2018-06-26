@@ -11,11 +11,11 @@ This feature works outside of the discovery queues, too!
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
 ## Why?
-During the [Steam Summer Sale](http://steamcommunity.com/my/stickers/) you get trading cards for going through your queue up to three times a day.  
+During the [Steam Summer Sale](https://steamcommunity.com/saliengame/play/#faq) you get trading cards for going through your queue up to three times a day.  
 This script makes it easier to stay lazy.
 
 ## Sale
-The script is optimized for the Steam Summer Sale 2018. Support for some of the functionality, including automation of multiple queues (two in this sale), along with other features, might not work with future sales. The script will be updated in such a case.
+The script is optimized for the Steam Summer Sale 2018. Support for some of the functionality, including automation of multiple queues (three in this sale), along with other features, might not work with future sales. The script will be updated in such a case.
 
 ## Installation
 1. Install [Greasemonkey](https://addons.mozilla.org/en-us/firefox/addon/greasemonkey/) (Firefox) or [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (Chrome) / [Tampermonkey](https://addons.opera.com/en/extensions/details/tampermonkey-beta/) (Opera).
