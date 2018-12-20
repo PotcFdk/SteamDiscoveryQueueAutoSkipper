@@ -9,7 +9,7 @@
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore*
 // @include     https://store.steampowered.com/explore*
-// @version     0.6.1
+// @version     0.7.0
 // @grant       none
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
@@ -151,7 +151,8 @@ if (app_agegate)
 	{
 		for (i = 0; i < btn_medium.length; i++)
 		{
-			if (btn_medium[i].getAttribute("onclick").includes("HideAgeGate"))
+			var onclick = btn_medium[i].getAttribute("onclick");
+			if (onclick && onclick.includes("HideAgeGate"))
 			{
 				click (btn_medium[i]);
 			}
@@ -165,9 +166,13 @@ var ageYear = document.getElementById ("ageYear");
 if (ageYear)
 {
 	ageYear.value = 1985;
-	if (DoAgeGateSubmit)
+	if (typeof DoAgeGateSubmit == "function")
 	{
 		DoAgeGateSubmit();
+	}
+	else if (typeof ViewProductPage == "function")
+	{
+		ViewProductPage();
 	}
 }
 
