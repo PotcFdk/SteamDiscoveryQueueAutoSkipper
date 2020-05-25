@@ -24,3 +24,6 @@ The script is optimized for the Steam Winter Sale 2018. Support for some of the 
 
 ## Problems?
 Feel free to [open an issue](https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/issues) in case you feel that something is not the way it should be.
+
+## Credits
+Logo kindly provided by krys (krys#4143).
