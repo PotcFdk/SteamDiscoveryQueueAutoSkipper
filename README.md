@@ -11,11 +11,11 @@ This feature works outside of the discovery queues, too!
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
 ## Why?
-During the [Steam Summer Sale 2020](https://store.steampowered.com/points/howitworks) you get one trading card for going through your queue once a day.  
+During the [Steam Winter Sale 2020](https://store.steampowered.com/points/howitworks) you get one trading card for going through your queue once a day.  
 This script makes it easier to stay lazy.
 
 ## Sale
-The script is optimized for the Steam Summer Sale 2020. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
+The script is optimized for the Steam Winter Sale 2020. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
 
 ## Installation
 1. Install [Violentmonkey](https://addons.mozilla.org/en-us/firefox/addon/violentmonkey/) (Firefox) or [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (Chrome) / [Tampermonkey](https://addons.opera.com/en/extensions/details/tampermonkey-beta/) (Opera).
