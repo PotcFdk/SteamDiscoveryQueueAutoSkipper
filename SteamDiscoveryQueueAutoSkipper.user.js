@@ -3,13 +3,15 @@
 // @name        Steam Discovery Queue Auto-Skipper
 // @namespace   https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper
 // @description Auto-clicks the "Next in Queue" button in Steam Discovery Queues.
+// @include     http://store.steampowered.com/
+// @include     https://store.steampowered.com/
 // @include     http://store.steampowered.com/app/*
 // @include     https://store.steampowered.com/app/*
 // @include     http://store.steampowered.com/agecheck/app/*
 // @include     https://store.steampowered.com/agecheck/app/*
 // @include     http://store.steampowered.com/explore*
 // @include     https://store.steampowered.com/explore*
-// @version     0.7.1
+// @version     0.8.0
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
@@ -178,40 +180,58 @@ if (ageYear)
 	}
 }
 
-
-var refresh_queue_btn = document.getElementById ("refresh_queue_btn");
-var _subtext = document.getElementsByClassName('subtext')[0];
-if (_subtext) {
-	var queue_count_subtext = _subtext.innerHTML;
-	var queue_count = parseInt(queue_count_subtext.replace(/[^0-9\.]/g, ''), 10);
-	if (isNaN(queue_count))
-	{
-		var language = document.documentElement.getAttribute("lang");
-		switch(language)
+function getQueueCount (doc) {
+	var _subtext = doc.getElementsByClassName('subtext')[0];
+	if (_subtext) {
+		var queue_count_subtext = _subtext.innerHTML;
+		var queue_count = parseInt(queue_count_subtext.replace(/[^0-9\.]/g, ''), 10);
+		if (isNaN(queue_count))
 		{
-			case "de":
-				queue_count = queue_count_subtext.includes(" eine ") ? 1 : 0;
-				break;
-			case "fr":
-				queue_count = queue_count_subtext.includes(" une ") ? 1 : 0;
-				break;
-			case "it":
-				queue_count = queue_count_subtext.includes(" un'altra ") ? 1 : 0;
-				break;
-			case "pl":
-				queue_count = queue_count_subtext.includes(" jedną ") ? 1 : 0;
-				break;
-			case "ru":
-			case "uk":
-				queue_count = queue_count_subtext.includes(" одну ") ? 1 : 0;
-				break;
-			default:
-				queue_count = 0;
+			var language = doc.documentElement.getAttribute("lang");
+			switch(language)
+			{
+				case "de":
+					queue_count = queue_count_subtext.includes(" eine ") ? 1 : 0;
+					break;
+				case "fr":
+					queue_count = queue_count_subtext.includes(" une ") ? 1 : 0;
+					break;
+				case "it":
+					queue_count = queue_count_subtext.includes(" un'altra ") ? 1 : 0;
+					break;
+				case "pl":
+					queue_count = queue_count_subtext.includes(" jedną ") ? 1 : 0;
+					break;
+				case "ru":
+				case "uk":
+					queue_count = queue_count_subtext.includes(" одну ") ? 1 : 0;
+					break;
+				default:
+					queue_count = 0;
+			}
 		}
 	}
+	return queue_count;
 }
 
-if (refresh_queue_btn && (queue_count >= 1))
+if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) > 60*60*1000) { // 1 hour
+	fetch('https://store.steampowered.com/explore/', {credentials: 'include'}).then(r =>r.text().then(body => {
+		const doc = new DOMParser().parseFromString(body, "text/html");
+		if (getQueueCount (doc) > 0)
+			ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
+								'You seem to have remaining unlockable trading cards in your discovery queue!\n'
+								+ 'Do you want to start auto-exploring the queue now?',
+								'Yes!', 'No, remind me later.').done (function () {
+				location.href = 'https://store.steampowered.com/explore/startnew';
+			});
+		else
+			console.log ("Queue count is 0");
+		localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked = Date.now();
+	}));
+}
+
+const refresh_queue_btn = document.getElementById ("refresh_queue_btn");
+if (refresh_queue_btn && (getQueueCount (document) >= 1))
 {
 	click (refresh_queue_btn);
 }
