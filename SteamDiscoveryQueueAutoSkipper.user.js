@@ -35,7 +35,7 @@
 	limitations under the License.
 */
 
-// Handle error pages
+// (0) Handle error pages
 
 var page = document.getElementsByTagName("BODY")[0].innerHTML;
 
@@ -44,6 +44,7 @@ if (page.length < 100
 	|| page.includes ("The Steam Store is experiencing some heavy load right now"))
 {
 	location.reload();
+	return;
 }
 
 // Click helper
@@ -58,7 +59,7 @@ function click (obj)
 	});
 }
 
-// Main queue-skipper
+// (1) Main queue-skipper
 
 function handleQueuePage()
 {
@@ -143,6 +144,7 @@ function handleQueuePage()
 if (document.getElementsByClassName ("btn_next_in_queue").length)
 {
 	handleQueuePage();
+	return;
 }
 
 // Automate agegate #1
@@ -180,6 +182,8 @@ if (ageYear)
 	}
 }
 
+// Multiple queues helper
+
 function getQueueCount (doc) {
 	var _subtext = doc.getElementsByClassName('subtext')[0];
 	if (_subtext) {
@@ -214,7 +218,31 @@ function getQueueCount (doc) {
 	return queue_count;
 }
 
-if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) > 60*60*1000) { // 1 hour
+// ItemRewards helper
+
+function claim_sale_reward (webapi_token) {
+	return fetch("https://api.steampowered.com/ISaleItemRewardsService/ClaimItem/v1?access_token=" + webapi_token, {
+		"credentials": "omit",
+		"headers": {
+			"Content-Type": "multipart/form-data; boundary=---------------------------90594386426341336747734585788"
+		},
+		"referrer": "https://store.steampowered.com/points/shop",
+		"body": "-----------------------------90594386426341336747734585788\r\nContent-Disposition: form-data; name=\"input_protobuf_encoded\"\r\n\r\n\r\n-----------------------------90594386426341336747734585788--\r\n",
+		"method": "POST",
+		"mode": "cors"
+	});
+}
+
+// (2) Multiple queues trigger
+const refresh_queue_btn = document.getElementById ("refresh_queue_btn");
+
+if (refresh_queue_btn && (getQueueCount (document) >= 1))
+{
+	click (refresh_queue_btn);
+}
+
+// (3) Queue check and notification
+else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) > 60*60*1000) { // 1 hour
 	fetch('https://store.steampowered.com/explore/', {credentials: 'include'}).then(r =>r.text().then(body => {
 		const doc = new DOMParser().parseFromString(body, "text/html");
 		if (getQueueCount (doc) > 0)
@@ -230,8 +258,27 @@ if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) 
 	}));
 }
 
-const refresh_queue_btn = document.getElementById ("refresh_queue_btn");
-if (refresh_queue_btn && (getQueueCount (document) >= 1))
-{
-	click (refresh_queue_btn);
+// (4) ItemRewards check and background execution
+else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0) { // 1 hour
+	fetch ('https://store.steampowered.com/points/shop', {credentials: 'include'}).then(r =>r.text().then(body => {
+		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + 60*60*1000;
+
+		const doc = new DOMParser().parseFromString(body, "text/html");
+		const application_config = doc.getElementById('application_config');
+		const data_loyaltystore = JSON.parse(application_config.getAttribute('data-loyaltystore'));
+		const webapi_token = data_loyaltystore.webapi_token;
+		if (data_loyaltystore.can_claim_sale_reward.can_claim == 1) {
+			console.log("Claiming freesticker...");
+			claim_sale_reward (webapi_token).then (() => {
+				ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
+								'Auto-claimed a free sticker! Do you want to check your inventory now?',
+								'Yes!', 'No.').done (function () {
+					location.href = 'https://steamcommunity.com/my/inventory';
+				});
+			});
+		} else if (typeof data_loyaltystore.can_claim_sale_reward.next_claim_time == "number") {
+			console.log (`Setting freesticker_next_claim_time to ${data_loyaltystore.can_claim_sale_reward.next_claim_time}`)
+			localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = data_loyaltystore.can_claim_sale_reward.next_claim_time;
+		}
+	}));
 }
