@@ -8,7 +8,7 @@
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
 // @match       *://store.steampowered.com/points*
-// @version     0.9.0
+// @version     0.9.1
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
@@ -256,9 +256,9 @@ else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked |
 }
 
 // (4) ItemRewards check and background execution
-else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0) { // 1 hour
+else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0) {
 	fetch ('https://store.steampowered.com/points/shop', {credentials: 'include'}).then(r =>r.text().then(body => {
-		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + 60*60*1000;
+		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + 60*60*1000; // default to 1 hour
 
 		const doc = new DOMParser().parseFromString(body, "text/html");
 		const application_config = doc.getElementById('application_config');
@@ -275,7 +275,7 @@ else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_n
 			});
 		} else if (typeof data_loyaltystore.can_claim_sale_reward.next_claim_time == "number") {
 			console.log (`Setting freesticker_next_claim_time to ${data_loyaltystore.can_claim_sale_reward.next_claim_time}`)
-			localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = data_loyaltystore.can_claim_sale_reward.next_claim_time;
+			localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = data_loyaltystore.can_claim_sale_reward.next_claim_time*1000;
 		}
 	}));
 }
