@@ -33,8 +33,11 @@ Logo kindly provided by krys (krys#4143).
 
 ## Release Notes
 
+### 0.10 (released 2021-01-13)
+- REMOVE: ItemReward handler (page/data is gone from the Steam pages)
+
 ### 0.9 (released 2020-12-29)
-- NEW: winter sale 2020: add support for auto-claiming stickers (ItemReward)
+- NEW: winter sale 2020: support for auto-claiming stickers (ItemReward)
 
 ### 0.8 (released 2020-12-25)
 - NEW: the script now notifies you when you can get cards by browsing the discovery queue
