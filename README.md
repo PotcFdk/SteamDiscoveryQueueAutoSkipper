@@ -11,17 +11,18 @@ This feature works outside of the discovery queues, too!
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
 ## Why?
-During the [Steam Winter Sale 2020](https://store.steampowered.com/points/howitworks) you get one trading card for going through your queue once a day.  
-This script makes it easier to stay lazy.
+During the [Steam Winter Sale 2021](https://store.steampowered.com/points/howitworks) you unfortunately don't get any trading card for going through your queue once a day.  
+This script used to make it easier to stay lazy.  
+Bypassing the age-gate and claiming the free stickers still works in 2021, though!
 
 ## Sale
-The script is optimized for the Steam Winter Sale 2020. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
+The script is optimized for the Steam Winter Sale 2021. Support for some of the functionality, including automation of multiple queues (none this year), along with other features, might not work with future sales. The script will be updated in such a case.
 
-### Winter Sale 2020
-During the winter sale 2020, you can claim free stickers. This script will now also auto-claim these in the background and notify you about it.
+### Winter Sale 2021
+During the winter sale 2021, you can claim free stickers. This script will now also auto-claim these in the background and notify you about it.
 
 ## Installation
-1. Install [Violentmonkey](https://addons.mozilla.org/en-us/firefox/addon/violentmonkey/) (Firefox) or [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (Chrome) / [Tampermonkey](https://addons.opera.com/en/extensions/details/tampermonkey-beta/) (Opera).
+1. Install [Violentmonkey](https://violentmonkey.github.io/get-it/) or another userscript addon such as Tampermonkey for your browser.
 2. Open `https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/raw/master/SteamDiscoveryQueueAutoSkipper.user.js` or click [here](https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/raw/master/SteamDiscoveryQueueAutoSkipper.user.js).
 3. Click `Install`.  
 
@@ -32,6 +33,9 @@ Feel free to [open an issue](https://github.com/PotcFdk/SteamDiscoveryQueueAutoS
 Logo kindly provided by krys (krys#4143).
 
 ## Release Notes
+
+### 0.11 (released 2021-12-23)
+- NEW: winter sale 2021: Re-add ItemReward handler, and maybe this time we'll keep it in the script for future use!
 
 ### 0.10 (released 2021-01-13)
 - REMOVE: ItemReward handler (page/data is gone from the Steam pages)
