@@ -8,7 +8,7 @@
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
 // @match       *://store.steampowered.com/points*
-// @version     0.10.0
+// @version     0.11.0
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
@@ -215,6 +215,21 @@ function getQueueCount (doc) {
 	return queue_count;
 }
 
+// ItemRewards helper
+
+function claim_sale_reward (webapi_token) {
+	return fetch("https://api.steampowered.com/ISaleItemRewardsService/ClaimItem/v1?access_token=" + webapi_token, {
+		"credentials": "omit",
+		"headers": {
+			"Content-Type": "multipart/form-data; boundary=---------------------------90594386426341336747734585788"
+		},
+		"referrer": "https://store.steampowered.com/points/shop",
+		"body": "-----------------------------90594386426341336747734585788\r\nContent-Disposition: form-data; name=\"input_protobuf_encoded\"\r\n\r\n\r\n-----------------------------90594386426341336747734585788--\r\n",
+		"method": "POST",
+		"mode": "cors"
+	});
+}
+
 // (2) Multiple queues trigger
 const refresh_queue_btn = document.getElementById ("refresh_queue_btn");
 
@@ -240,9 +255,27 @@ else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked |
 	}));
 }
 
-// Legacy Cleanup
+// (4) ItemRewards check and background execution
+else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0) {
+	fetch ('https://store.steampowered.com/points/shop', {credentials: 'include'}).then(r =>r.text().then(body => {
+		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + 60*60*1000; // default to 1 hour
 
-// ItemRewards (2020 Winter Sale, v0.9)
-if (typeof localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time != "undefined") {
-	delete localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time;
+		const doc = new DOMParser().parseFromString(body, "text/html");
+		const application_config = doc.getElementById('application_config');
+		const data_loyaltystore = JSON.parse(application_config.getAttribute('data-loyaltystore'));
+		const webapi_token = data_loyaltystore.webapi_token;
+		if (data_loyaltystore.can_claim_sale_reward.can_claim == 1) {
+			console.log("Claiming freesticker...");
+			claim_sale_reward (webapi_token).then (() => {
+				ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
+								'Auto-claimed a free sticker! Do you want to check your inventory now?',
+								'Yes!', 'No.').done (function () {
+					location.href = 'https://steamcommunity.com/my/inventory';
+				});
+			});
+		} else if (typeof data_loyaltystore.can_claim_sale_reward.next_claim_time == "number") {
+			console.log (`Setting freesticker_next_claim_time to ${data_loyaltystore.can_claim_sale_reward.next_claim_time}`)
+			localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = data_loyaltystore.can_claim_sale_reward.next_claim_time*1000;
+		}
+	}));
 }
