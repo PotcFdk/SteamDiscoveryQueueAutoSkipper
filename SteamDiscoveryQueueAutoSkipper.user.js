@@ -8,7 +8,7 @@
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
 // @match       *://store.steampowered.com/points*
-// @version     0.11.0
+// @version     0.11.1
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
@@ -16,7 +16,7 @@
 // ==/UserScript==
 
 /*
-	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2020
+	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2021
 	Project logo donated to the project by krys (krys#4143), 2020
 
 	Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,9 @@
 	limitations under the License.
 */
 
-// (0) Handle error pages
+const HOUR = 60*60*1000;
+
+// Handle error pages
 
 var page = document.getElementsByTagName("BODY")[0].innerHTML;
 
@@ -56,7 +58,7 @@ function click (obj)
 	});
 }
 
-// (1) Main queue-skipper
+// Main queue-skipper
 
 function handleQueuePage()
 {
@@ -179,6 +181,23 @@ if (ageYear)
 	}
 }
 
+// Login detection helper
+
+const hasLoginLink = () =>
+	Array.from(document.getElementsByClassName("global_action_link"))
+		.filter(a => a.href)
+		.filter(a => a.href
+		.includes("login")).length > 0;
+
+const hasAccountLink = () =>
+	Array.from(document.getElementsByClassName("global_action_link"))
+		.filter(a => a.href)
+		.filter(a => a.href
+		.includes("account")).length > 0;
+
+const isLoggedIn =  () => !hasLoginLink() &&  hasAccountLink();
+const isLoggedOut = () =>  hasLoginLink() && !hasAccountLink();
+
 // Multiple queues helper
 
 function getQueueCount (doc) {
@@ -230,7 +249,14 @@ function claim_sale_reward (webapi_token) {
 	});
 }
 
-// (2) Multiple queues trigger
+// Purge existing timestamps when not logged in
+
+if (isLoggedOut()) {
+	delete localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked;
+	delete localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time;
+}
+
+// Multiple queues trigger
 const refresh_queue_btn = document.getElementById ("refresh_queue_btn");
 
 if (refresh_queue_btn && (getQueueCount (document) >= 1))
@@ -238,8 +264,8 @@ if (refresh_queue_btn && (getQueueCount (document) >= 1))
 	click (refresh_queue_btn);
 }
 
-// (3) Queue check and notification
-else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) > 60*60*1000) { // 1 hour
+// Queue check and notification
+else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) > HOUR)) {
 	fetch('https://store.steampowered.com/explore/', {credentials: 'include'}).then(r =>r.text().then(body => {
 		const doc = new DOMParser().parseFromString(body, "text/html");
 		if (getQueueCount (doc) > 0)
@@ -251,14 +277,15 @@ else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked |
 			});
 		else
 			console.log ("Queue count is 0");
+
 		localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked = Date.now();
 	}));
 }
 
-// (4) ItemRewards check and background execution
-else if (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0) {
+// ItemRewards check and background execution
+else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0)) {
 	fetch ('https://store.steampowered.com/points/shop', {credentials: 'include'}).then(r =>r.text().then(body => {
-		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + 60*60*1000; // default to 1 hour
+		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + HOUR;
 
 		const doc = new DOMParser().parseFromString(body, "text/html");
 		const application_config = doc.getElementById('application_config');

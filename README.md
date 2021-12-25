@@ -33,6 +33,10 @@ Logo kindly provided by krys (krys#4143).
 
 ## Release Notes
 
+### 0.11.1 (released 2021-12-25)
+- NEW: remove all "last checked" timestamps when not logged in
+- FIX: don't run and don't set the "last checked" timestamps for most features that require you to be logged in when not logged in
+
 ### 0.11 (released 2021-12-23)
 - NEW: winter sale 2021: Re-add ItemReward handler, and maybe this time we'll keep it in the script for future use!
 
