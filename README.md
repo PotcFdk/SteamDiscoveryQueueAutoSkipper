@@ -11,12 +11,11 @@ This feature works outside of the discovery queues, too!
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
 ## Why?
-During the [Steam Winter Sale 2021](https://store.steampowered.com/points/howitworks) you unfortunately don't get any trading card for going through your queue once a day.  
-This script used to make it easier to stay lazy.  
-Bypassing the age-gate and claiming the free stickers still works in 2021, though!
+During the [Steam Winter Sale 2021](https://store.steampowered.com/points/howitworks) you get one trading card for going through your queue once a day.  
+This script makes it easier to stay lazy.
 
 ## Sale
-The script is optimized for the Steam Winter Sale 2021. Support for some of the functionality, including automation of multiple queues (none this year), along with other features, might not work with future sales. The script will be updated in such a case.
+The script is optimized for the Steam Winter Sale 2021. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
 
 ### Winter Sale 2021
 During the winter sale 2021, you can claim free stickers. This script will now also auto-claim these in the background and notify you about it.
