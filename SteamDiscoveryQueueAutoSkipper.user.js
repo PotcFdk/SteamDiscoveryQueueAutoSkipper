@@ -301,7 +301,7 @@ if (isLoggedOut()) {
 // Multiple queues trigger
 const refresh_queue_btn = document.getElementById ("refresh_queue_btn");
 
-if (refresh_queue_btn && (getQueueCount (document) >= 1))
+if (refresh_queue_btn/* && (getQueueCount (document) >= 1)*/)
 {
 	click (refresh_queue_btn);
 }
