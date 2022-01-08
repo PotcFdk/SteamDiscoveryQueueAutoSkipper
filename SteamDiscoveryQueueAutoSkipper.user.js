@@ -8,7 +8,7 @@
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
 // @match       *://store.steampowered.com/points*
-// @version     0.11.1
+// @version     0.12.0
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
@@ -16,8 +16,9 @@
 // ==/UserScript==
 
 /*
-	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2021
+	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2022
 	Project logo donated to the project by krys (krys#4143), 2020
+	Edits by: Ni1kko (Ni1kko#1652), 2022
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -32,22 +33,16 @@
 	limitations under the License.
 */
 
+
 const HOUR = 60*60*1000;
 
-// Handle error pages
+//-- Login detection helper
+const hasLoginLink = () => Array.from(document.getElementsByClassName("global_action_link")).filter(a => a.href).filter(a => a.href.includes("login")).length > 0;
+const hasAccountLink = () => Array.from(document.getElementsByClassName("global_action_link")).filter(a => a.href).filter(a => a.href.includes("account")).length > 0;
+const isLoggedIn =  () => !hasLoginLink() &&  hasAccountLink();
+const isLoggedOut = () =>  hasLoginLink() && !hasAccountLink();
 
-var page = document.getElementsByTagName("BODY")[0].innerHTML;
-
-if (page.length < 100
-	|| page.includes ("An error occurred while processing your request")
-	|| page.includes ("The Steam Store is experiencing some heavy load right now"))
-{
-	location.reload();
-	return;
-}
-
-// Click helper
-
+//-- Click helper
 function click (obj)
 {
 	var evObj = new MouseEvent ('click');
@@ -58,13 +53,65 @@ function click (obj)
 	});
 }
 
-// Main queue-skipper
+//-- Sleep helper
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+//-- Popup closer
+async function no_popup() {
+	while (document.location.pathname =="/explore/") { 
+		if(document.getElementsByClassName('btn_grey_steamui').length == 1){
+			await sleep(10 * 1000);
+			if(document.getElementsByClassName('btn_grey_steamui').length == 1){ 
+				console.log('Closing popup');
+				click (document.getElementsByClassName('btn_grey_steamui')[0]);
+			};
+			await init();
+		};
+		//console.log('popup check loop');
+		await sleep(5 * 1000);
+	}
+}
+
+//-- Main queue-skipper
 function handleQueuePage()
 {
-	var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
+	//-- Automate agegate #1
+	var app_agegate = document.getElementById ("app_agegate");
+	if (app_agegate)
+	{
+		var btn_medium = app_agegate.getElementsByClassName ("btn_medium");
+		if (btn_medium)
+		{
+			for (i = 0; i < btn_medium.length; i++)
+			{
+				var onclick = btn_medium[i].getAttribute("onclick");
+				if (onclick && onclick.includes("HideAgeGate"))
+				{
+					click (btn_medium[i]);
+				}
+			}
+		}
+	}
+
+	//-- Automate agegate #2
+	var ageYear = document.getElementById ("ageYear");
+	if (ageYear)
+	{
+		ageYear.value = 1985;
+		if (typeof DoAgeGateSubmit == "function")
+		{
+			DoAgeGateSubmit();
+		}
+		else if (typeof ViewProductPage == "function")
+		{
+			ViewProductPage();
+		}
+	}
+
+	//-- Add to wishlist
 	var category_icons = document.getElementsByClassName('category_icon');
-    
     if (category_icons) {
         var is_free = false;
         var is_dlc = false;
@@ -87,25 +134,37 @@ function handleQueuePage()
                 break;
             }
         }
-
+		
         if (!is_free && !is_dlc) {
-            console.log('Adding to Wishlist.');
             var wishlist_area = document.getElementById('add_to_wishlist_area');
-            if (wishlist_area && wishlist_area.firstElementChild && wishlist_area.firstElementChild.href && wishlist_area.firstElementChild.href != '' && wishlist_area.firstElementChild.href.indexOf('javascript:AddToWishlist(') === 0) {
-                try {
+            if (wishlist_area && wishlist_area.firstElementChild && wishlist_area.firstElementChild.href && wishlist_area.firstElementChild.href != '' && wishlist_area.firstElementChild.href.indexOf('javascript:AddToWishlist(') === 0) 
+			{
+                var didadd = false;
+
+				try {
+					//console.log('Adding product to Wishlist.');
                     wishlist_area.firstElementChild.click();
                     document.getElementsByClassName('queue_btn_active')[0].style.border ='1px solid #999999';
+					didadd = true;
                 } catch (err) {
-                    console.log('Error adding to Wishlist. Try reloading the page.');
+					didadd = false;
                 }
+					
+				if(didadd){
+					console.log('Product added to Wishlist.');
+				}else{
+					console.log('Error adding product to Wishlist.');
+				}
             } else {
-                console.log('This app is already on your Wishlist or there was an error.');
+                console.log('Product is already on your Wishlist.');
             }
         } else {
-            console.log(is_free ? 'This app is free, skipping!' : 'This dlc is free, skipping!');
+            console.log(is_free ? 'Product is free, skipping!' : 'Product is dlc, skipping!');
         };
     }
 
+	//-- Next queue item
+	var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
 	if (btn)
 	{
 		var btn_text = btn.getElementsByTagName ("span")[0];
@@ -182,66 +241,7 @@ function handleQueuePage()
 	ajax();
 }
 
-if (document.getElementsByClassName ("btn_next_in_queue").length)
-{
-	handleQueuePage();
-	return;
-}
-
-// Automate agegate #1
-
-var app_agegate = document.getElementById ("app_agegate");
-if (app_agegate)
-{
-	var btn_medium = app_agegate.getElementsByClassName ("btn_medium");
-	if (btn_medium)
-	{
-		for (i = 0; i < btn_medium.length; i++)
-		{
-			var onclick = btn_medium[i].getAttribute("onclick");
-			if (onclick && onclick.includes("HideAgeGate"))
-			{
-				click (btn_medium[i]);
-			}
-		}
-	}
-}
-
-// Automate agegate #2
-
-var ageYear = document.getElementById ("ageYear");
-if (ageYear)
-{
-	ageYear.value = 1985;
-	if (typeof DoAgeGateSubmit == "function")
-	{
-		DoAgeGateSubmit();
-	}
-	else if (typeof ViewProductPage == "function")
-	{
-		ViewProductPage();
-	}
-}
-
-// Login detection helper
-
-const hasLoginLink = () =>
-	Array.from(document.getElementsByClassName("global_action_link"))
-		.filter(a => a.href)
-		.filter(a => a.href
-		.includes("login")).length > 0;
-
-const hasAccountLink = () =>
-	Array.from(document.getElementsByClassName("global_action_link"))
-		.filter(a => a.href)
-		.filter(a => a.href
-		.includes("account")).length > 0;
-
-const isLoggedIn =  () => !hasLoginLink() &&  hasAccountLink();
-const isLoggedOut = () =>  hasLoginLink() && !hasAccountLink();
-
-// Multiple queues helper
-
+//-- Multiple queues helper
 function getQueueCount (doc) {
 	var _subtext = doc.getElementsByClassName('subtext')[0];
 	if (_subtext) {
@@ -276,8 +276,7 @@ function getQueueCount (doc) {
 	return queue_count;
 }
 
-// ItemRewards helper
-
+//-- ItemRewards helper
 function claim_sale_reward (webapi_token) {
 	return fetch("https://api.steampowered.com/ISaleItemRewardsService/ClaimItem/v1?access_token=" + webapi_token, {
 		"credentials": "omit",
@@ -291,60 +290,84 @@ function claim_sale_reward (webapi_token) {
 	});
 }
 
-// Purge existing timestamps when not logged in
+//-- Main function
+async function init() 
+{ 
+	// Handle error pages
+	var page = document.getElementsByTagName("BODY")[0].innerHTML;
+	if (page.length < 100 || page.includes ("An error occurred while processing your request")|| page.includes ("The Steam Store is experiencing some heavy load right now"))
+	{
+		location.reload();
+		return;
+	}
+	// Purge existing timestamps when not logged in
+	if (isLoggedOut()) 
+	{
+		delete localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked;
+		delete localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time;
+	}
 
-if (isLoggedOut()) {
-	delete localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked;
-	delete localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time;
-}
+	//-- Start Queue
+	var refresh_queue_btn = document.getElementById ("refresh_queue_btn");
+	if (refresh_queue_btn/* && (getQueueCount (document) >= 1)*/)
+	{
+		console.log('Starting in 5 secs');
+		await sleep(5 * 1000);
 
-// Multiple queues trigger
-const refresh_queue_btn = document.getElementById ("refresh_queue_btn");
-
-if (refresh_queue_btn/* && (getQueueCount (document) >= 1)*/)
-{
-	click (refresh_queue_btn);
-}
-
-// Queue check and notification
-else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) > HOUR)) {
-	fetch('https://store.steampowered.com/explore/', {credentials: 'include'}).then(r =>r.text().then(body => {
-		const doc = new DOMParser().parseFromString(body, "text/html");
-		if (getQueueCount (doc) > 0)
-			ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
-								'You seem to have remaining unlockable trading cards in your discovery queue!\n'
-								+ 'Do you want to start auto-exploring the queue now?',
-								'Yes!', 'No, remind me later.').done (function () {
-				location.href = 'https://store.steampowered.com/explore/startnew';
-			});
-		else
-			console.log ("Queue count is 0");
-
-		localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked = Date.now();
-	}));
-}
-
-// ItemRewards check and background execution
-else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0)) {
-	fetch ('https://store.steampowered.com/points/shop', {credentials: 'include'}).then(r =>r.text().then(body => {
-		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + HOUR;
-
-		const doc = new DOMParser().parseFromString(body, "text/html");
-		const application_config = doc.getElementById('application_config');
-		const data_loyaltystore = JSON.parse(application_config.getAttribute('data-loyaltystore'));
-		const webapi_token = data_loyaltystore.webapi_token;
-		if (data_loyaltystore.can_claim_sale_reward.can_claim == 1) {
-			console.log("Claiming freesticker...");
-			claim_sale_reward (webapi_token).then (() => {
+		console.log('Loading new queue');
+		click (refresh_queue_btn);
+		no_popup();
+	}
+	else if (document.getElementsByClassName ("btn_next_in_queue").length)
+	{
+		//-- Next Queue Item
+		handleQueuePage();
+		return;
+	}
+	else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked || 0) > HOUR)) 
+	{// Queue check and notification
+		fetch('https://store.steampowered.com/explore/', {credentials: 'include'}).then(r =>r.text().then(body => {
+			var doc = new DOMParser().parseFromString(body, "text/html");
+			if (getQueueCount (doc) > 0)
 				ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
-								'Auto-claimed a free sticker! Do you want to check your inventory now?',
-								'Yes!', 'No.').done (function () {
-					location.href = 'https://steamcommunity.com/my/inventory';
+									'You seem to have remaining unlockable trading cards in your discovery queue!\n'
+									+ 'Do you want to start auto-exploring the queue now?',
+									'Yes!', 'No, remind me later.').done (function () {
+					location.href = 'https://store.steampowered.com/explore/startnew';
 				});
-			});
-		} else if (typeof data_loyaltystore.can_claim_sale_reward.next_claim_time == "number") {
-			console.log (`Setting freesticker_next_claim_time to ${data_loyaltystore.can_claim_sale_reward.next_claim_time}`)
-			localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = data_loyaltystore.can_claim_sale_reward.next_claim_time*1000;
-		}
-	}));
+			else
+				console.log ("Queue count is 0");
+
+			localStorage.SteamDiscoveryQueueAutoSkipper_lastchecked = Date.now();
+		}));
+	}
+	else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0)) 
+	{	// ItemRewards check and background execution
+		fetch ('https://store.steampowered.com/points/shop', {credentials: 'include'}).then(r =>r.text().then(body => {
+			localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + HOUR;
+
+			var doc = new DOMParser().parseFromString(body, "text/html");
+			var application_config = doc.getElementById('application_config');
+			var data_loyaltystore = JSON.parse(application_config.getAttribute('data-loyaltystore'));
+			var webapi_token = data_loyaltystore.webapi_token;
+			if (data_loyaltystore.can_claim_sale_reward.can_claim == 1) {
+				console.log("Claiming freesticker...");
+				claim_sale_reward (webapi_token).then (() => {
+					ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
+									'Auto-claimed a free sticker! Do you want to check your inventory now?',
+									'Yes!', 'No.').done (function () {
+						location.href = 'https://steamcommunity.com/my/inventory';
+					});
+				});
+			} else if (typeof data_loyaltystore.can_claim_sale_reward.next_claim_time == "number") {
+				console.log (`Setting freesticker_next_claim_time to ${data_loyaltystore.can_claim_sale_reward.next_claim_time}`)
+				localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = data_loyaltystore.can_claim_sale_reward.next_claim_time*1000;
+			}
+		}));
+	}
+
 }
+
+//-- Start point 
+console.log('Steam Discovery Queue Auto-Skipper');
+init();
