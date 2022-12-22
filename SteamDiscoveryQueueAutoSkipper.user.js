@@ -190,14 +190,13 @@ const hasLoginLink = () =>
 		.filter(a => a.href
 		.includes("login")).length > 0;
 
-const hasAccountLink = () =>
-	Array.from(document.getElementsByClassName("global_action_link"))
-		.filter(a => a.href)
-		.filter(a => a.href
-		.includes("account")).length > 0;
+const hasAvatarClassElements = () => document.getElementsByClassName("playerAvatar").length > 0;
 
-const isLoggedIn =  () => !hasLoginLink() &&  hasAccountLink();
-const isLoggedOut = () =>  hasLoginLink() && !hasAccountLink();
+//const application_config = document.getElementById('application_config');
+//const data_userinfo = application_config ? JSON.parse(application_config.getAttribute('data-userinfo'));
+
+const isLoggedIn =  () => !hasLoginLink() &&  hasAvatarClassElements();
+const isLoggedOut = () =>  hasLoginLink() && !hasAvatarClassElements();
 
 // Multiple queues helper
 
