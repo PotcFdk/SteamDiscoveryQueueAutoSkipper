@@ -3,7 +3,7 @@
 // @name        Steam Discovery Queue Auto-Skipper
 // @namespace   https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper
 // @description Auto-clicks the "Next in Queue" button in Steam Discovery Queues.
-// @match       *://store.steampowered.com/
+// @match       *://store.steampowered.com/*
 // @match       *://store.steampowered.com/app/*
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
