@@ -295,10 +295,10 @@ else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkip
 
 	// First let's fetch one of the offer pages that we can grab the webapi token from.
   fetch ('https://store.steampowered.com/greatondeck', {credentials: 'include'}).then(r =>r.text().then(body => {
-		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + HOUR;
+    localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + HOUR;
 
-		const doc = new DOMParser().parseFromString(body, "text/html");
-		const application_config = doc.getElementById('application_config');
+    const doc = new DOMParser().parseFromString(body, "text/html");
+    const application_config = doc.getElementById('application_config');
     const webapi_token = JSON.parse(application_config.getAttribute('data-loyalty_webapi_token')); // There it is!
 
     // Now let's actually ask the ISaleItemRewardsService if we can claim the item.
@@ -309,18 +309,18 @@ else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkip
       const response = CanClaimItemResponse.decode (new Uint8Array (body));
 
       if (response.can_claim) {
-			console.log("Claiming freesticker...");
-			claim_sale_reward (webapi_token).then (() => {
-				ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
-								'Auto-claimed a free sticker! Do you want to check your inventory now?',
-								'Yes!', 'No.').done (function () {
-					location.href = 'https://steamcommunity.com/my/inventory';
-				});
-			});
+        console.log("Claiming freesticker...");
+        claim_sale_reward (webapi_token).then (() => {
+          ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
+                  'Auto-claimed a free sticker! Do you want to check your inventory now?',
+                  'Yes!', 'No.').done (function () {
+            location.href = 'https://steamcommunity.com/my/inventory';
+          });
+        });
       } else if (typeof response.next_claim_time == "number") {
         console.log (`Setting freesticker_next_claim_time to ${response.next_claim_time}`)
         localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = response.next_claim_time*1000;
-		}
-	}));
+      }
+    }));
   }));
 }
