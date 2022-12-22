@@ -13,6 +13,7 @@
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
+// @require     https://cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js
 // ==/UserScript==
 
 /*
@@ -284,14 +285,31 @@ else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkip
 
 // ItemRewards check and background execution
 else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time || 0) > 0)) {
-	fetch ('https://store.steampowered.com/points/shop', {credentials: 'include'}).then(r =>r.text().then(body => {
+  // I hope this is at least somewhat correct. At least it feels OK, so that means we're probably halfway there.
+  const ItemRewardProtos = "syntax=\"proto3\";\
+    message CanClaimItemResponse {\
+      bool can_claim = 1;\
+      int32 next_claim_time = 2;\
+    }";
+  const ItemRewardProtoRoot = protobuf.parse (ItemRewardProtos, { keepCase: true }).root;
+  const CanClaimItemResponse = ItemRewardProtoRoot.lookup ("CanClaimItemResponse");
+
+	// First let's fetch one of the offer pages that we can grab the webapi token from.
+  fetch ('https://store.steampowered.com/greatondeck', {credentials: 'include'}).then(r =>r.text().then(body => {
 		localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = Date.now() + HOUR;
 
 		const doc = new DOMParser().parseFromString(body, "text/html");
 		const application_config = doc.getElementById('application_config');
-		const data_loyaltystore = JSON.parse(application_config.getAttribute('data-loyaltystore'));
-		const webapi_token = data_loyaltystore.webapi_token;
-		if (data_loyaltystore.can_claim_sale_reward.can_claim == 1) {
+    const webapi_token = JSON.parse(application_config.getAttribute('data-loyalty_webapi_token')); // There it is!
+
+    // Now let's actually ask the ISaleItemRewardsService if we can claim the item.
+    fetch (`https://api.steampowered.com/ISaleItemRewardsService/CanClaimItem/v1?access_token=${webapi_token}&origin=https:%2F%2Fstore.steampowered.com&input_protobuf_encoded=CgdlbmdsaXNo`, {
+      credentials: 'omit',
+      mode: 'cors'
+    }).then(r => r.arrayBuffer().then(body => {
+      const response = CanClaimItemResponse.decode (new Uint8Array (body));
+
+      if (response.can_claim) {
 			console.log("Claiming freesticker...");
 			claim_sale_reward (webapi_token).then (() => {
 				ShowConfirmDialog ('SteamDiscoveryQueueAutoSkipper',
@@ -300,9 +318,10 @@ else if (isLoggedIn() && (Date.now() - (localStorage.SteamDiscoveryQueueAutoSkip
 					location.href = 'https://steamcommunity.com/my/inventory';
 				});
 			});
-		} else if (typeof data_loyaltystore.can_claim_sale_reward.next_claim_time == "number") {
-			console.log (`Setting freesticker_next_claim_time to ${data_loyaltystore.can_claim_sale_reward.next_claim_time}`)
-			localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = data_loyaltystore.can_claim_sale_reward.next_claim_time*1000;
+      } else if (typeof response.next_claim_time == "number") {
+        console.log (`Setting freesticker_next_claim_time to ${response.next_claim_time}`)
+        localStorage.SteamDiscoveryQueueAutoSkipper_freesticker_next_claim_time = response.next_claim_time*1000;
 		}
 	}));
+  }));
 }
