@@ -8,7 +8,7 @@
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
 // @match       *://store.steampowered.com/points*
-// @version     0.11.1
+// @version     0.12.0
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js

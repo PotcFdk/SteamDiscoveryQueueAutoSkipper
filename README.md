@@ -11,14 +11,14 @@ This feature works outside of the discovery queues, too!
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
 ## Why?
-During the [Steam Winter Sale 2021](https://store.steampowered.com/points/howitworks) you get one trading card for going through your queue once a day.  
+During the **Steam Winter Sale 2022** you get one trading card for going through your queue once a day.  
 This script makes it easier to stay lazy.
 
 ## Sale
-The script is optimized for the Steam Winter Sale 2021. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
+The script is optimized for the Steam Winter Sale 2022. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
 
-### Winter Sale 2021
-During the winter sale 2021, you can claim free stickers. This script will now also auto-claim these in the background and notify you about it.
+### Winter Sale 2022
+During the winter sale 2022, you can claim free stickers. This script will auto-claim these in the background and notify you about it.
 
 ## Installation
 1. Install [Violentmonkey](https://violentmonkey.github.io/get-it/) or another userscript addon such as Tampermonkey for your browser.
@@ -32,6 +32,10 @@ Feel free to [open an issue](https://github.com/PotcFdk/SteamDiscoveryQueueAutoS
 Logo kindly provided by krys (krys#4143).
 
 ## Release Notes
+
+### 0.12.0 (released 2022-12-22)
+- FIX: ItemRewards handling is now working again with this year's pages
+- FIX: possible login state detection issue, the new method should be a bit more reliable for now
 
 ### 0.11.1 (released 2021-12-25)
 - NEW: remove all "last checked" timestamps when not logged in
