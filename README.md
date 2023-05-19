@@ -1,31 +1,40 @@
 # Steam Discovery Queue Auto-Skipper
-This userscript auto-advances when it detects that you are viewing a Steam Discovery Queue item.  
 
-If your browser/setup supports it, it does this is a speedy way.  
-If something goes wrong, it auto-retries and/or tries simulating a normal press on the "Next in Queue"-button.  
-This should make sure that minor issues are automatically resolved.  
+## Supported Events / Features
 
-Age-restricted apps are automatically unlocked (i.e. this script supports automating 18+ confirmations) and runs through multiple discovery queues to get the maximum number of cards per day.  
-This feature works outside of the discovery queues, too!
+Currently confirmed working:
+- Steam Sports Fest 2023 (May 15 - May 22): auto-claiming free daily stickers ✅
+
+## Description
+
+This userscript automates several Steam event-related things.  
+
+Primarily (and hence, the name) it auto-advances when it detects that you are viewing a Steam Discovery Queue item.  
+During the **Steam Winter Sale 2022** you get one trading card for going through your queue once a day.  
+This script makes it easier to stay lazy.  
+
+If your browser/setup supports it, it does this is a speedy way. Multiple discovery queues are processed to get the maximum number of cards per day, if supported.  
 
 ![Screenshot of the "Next in Queue" button](https://i.imgur.com/NuCCY8D.png)
 
-## Why?
-During the **Steam Winter Sale 2022** you get one trading card for going through your queue once a day.  
-This script makes it easier to stay lazy.
+If something goes wrong, it auto-retries and/or tries simulating a normal press on the "Next in Queue"-button.  
+This should make sure that minor issues are automatically resolved before the script can be manually fixed/adjusted for new events or site updates.  
+
+## Additional Functionality
+
+- Age-restricted apps are automatically unlocked (i.e. this script supports automating 18+ confirmations).
+This feature works outside of the discovery queues, too!
+- Finally, free daily stickers are also auto-claimed when they are detected.
 
 ## Sale
 The script is optimized for the Steam Winter Sale 2022. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
-
-### Winter Sale 2022
-During the winter sale 2022, you can claim free stickers. This script will auto-claim these in the background and notify you about it.
 
 ## Installation
 1. Install [Violentmonkey](https://violentmonkey.github.io/get-it/) or another userscript addon such as Tampermonkey for your browser.
 2. Open `https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/raw/master/SteamDiscoveryQueueAutoSkipper.user.js` or click [here](https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/raw/master/SteamDiscoveryQueueAutoSkipper.user.js).
 3. Click `Install`.  
 
-## Problems?
+## Issues?
 Feel free to [open an issue](https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/issues) in case you feel that something is not the way it should be.
 
 ## Credits
