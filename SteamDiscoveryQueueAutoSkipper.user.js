@@ -61,8 +61,62 @@ function click (obj)
 
 // Main queue-skipper
 
+function injectLoadingBarStyleSheet()
+{
+	let styleBg = '', styleAppendix = '';
+	switch ((new Date()).getMonth())
+	{
+		case 11:
+			styleBg =
+				`background-size: 424px;
+				background-image: repeating-linear-gradient(45deg, #ff0000, #af0000 13px, #1d6a00 6px, #1d4a00 30px);
+				animation: moveGradient 5s linear infinite;`;
+			styleAppendix =
+				`@keyframes moveGradient {
+					0% {
+						background-position: 0 0; /* Start position */
+					}
+					100% {
+						background-position: -424px 0; /* End position */
+					}
+				}`;
+			break;
+		default:
+			styleBg =
+				`background-color: #ffcc6a;`;
+	}
+
+	const style = document.createElement('style');
+	style.innerHTML = `#queueActionsCtn::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 0px;
+		transition: width 1s ease 0s;
+		height: 100%;
+    	${styleBg}
+	}
+	${styleAppendix}`;
+	document.getElementsByTagName('head')[0].appendChild(style);
+	return style.sheet.cssRules;
+}
+
+const loadingBarAfterStyle = Array.from(injectLoadingBarStyleSheet()).filter(rule => rule.selectorText === "#queueActionsCtn::after").map(rule => rule.style)[0];
+
+function setLoadingBarProgress(percent) {
+	if (loadingBarAfterStyle && isFinite (percent))
+		loadingBarAfterStyle.width = Math.floor (Math.max (0, Math.min (100, percent))) + "%";
+}
+
+const queueCountTotal = Number(document.getElementsByClassName("queue_sub_text")[0]?.textContent.match(/\d+/)[0] || 0);
+
 function handleQueuePage()
 {
+	const queueCountRemaining = Number(document.getElementsByClassName("queue_sub_text")[0]?.textContent.match(/\d+/)[0] || 0);
+	const progress = 100 * (queueCountTotal-queueCountRemaining) / queueCountTotal;
+	setLoadingBarProgress (progress);
+
 	var btn = document.getElementsByClassName ("btn_next_in_queue")[0];
 
 	if (btn)
