@@ -8,7 +8,7 @@
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
 // @match       *://store.steampowered.com/points*
-// @version     0.12.0
+// @version     0.13.0
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
@@ -17,7 +17,7 @@
 // ==/UserScript==
 
 /*
-	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2022
+	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2023
 	Project logo donated to the project by krys (krys#4143), 2020
 
 	Licensed under the Apache License, Version 2.0 (the "License");

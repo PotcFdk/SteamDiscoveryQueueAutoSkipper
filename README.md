@@ -3,14 +3,14 @@
 ## Supported Events / Features
 
 Currently confirmed working:
-- Steam Summer Sale 2023 (June 29 - July 13): auto-skipping discovery queue for a free trading card + auto-claiming free daily stickers ✅
+- Steam Winter Sale 2023 (December 21 - January 04): auto-skipping discovery queue for a free trading card + auto-claiming free daily stickers ✅
 
 ## Description
 
 This userscript automates several Steam event-related things.  
 
 Primarily (and hence, the name) it auto-advances when it detects that you are viewing a Steam Discovery Queue item.  
-During the **Steam Summer Sale 2023** you get one trading card for going through your queue once a day.  
+During the **Steam Winter Sale 2023** you get one trading card for going through your queue once a day.  
 This script makes it easier to stay lazy.  
 
 If your browser/setup supports it, it does this is a speedy way. Multiple discovery queues are processed to get the maximum number of cards per day, if supported.  
@@ -27,7 +27,7 @@ This feature works outside of the discovery queues, too!
 - Finally, free daily stickers are also auto-claimed when they are detected.
 
 ## Sale
-The script is optimized for the Steam Summer Sale 2023. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
+The script is optimized for the Steam Winter Sale 2023. Support for some of the functionality, including automation of multiple queues (only one this year), along with other features, might not work with future sales. The script will be updated in such a case.
 
 ## Installation
 1. Install [Violentmonkey](https://violentmonkey.github.io/get-it/) or another userscript addon such as Tampermonkey for your browser.
@@ -41,6 +41,9 @@ Feel free to [open an issue](https://github.com/PotcFdk/SteamDiscoveryQueueAutoS
 Logo kindly provided by krys (krys#4143).
 
 ## Release Notes
+
+### 0.13.0 (released 2023-12-24)
+- NEW: Add a progress bar to the discovery queue handler.
 
 ### 0.12.0 (released 2022-12-22)
 - FIX: ItemRewards handling is now working again with this year's pages
