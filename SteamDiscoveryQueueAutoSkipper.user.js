@@ -8,12 +8,14 @@
 // @match       *://store.steampowered.com/agecheck/app/*
 // @match       *://store.steampowered.com/explore*
 // @match       *://store.steampowered.com/points*
-// @version     0.13.0
+// @version     0.13.1
 // @grant       none
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
 // @require     https://cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js
+// @homepageURL    https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper
+// @supportURL     https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/issues
 // ==/UserScript==
 
 /*
