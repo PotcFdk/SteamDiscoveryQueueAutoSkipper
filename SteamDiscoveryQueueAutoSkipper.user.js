@@ -14,8 +14,8 @@
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
 // @require     https://cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js
-// @homepageURL    https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper
-// @supportURL     https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/issues
+// @homepageURL https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper
+// @supportURL  https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/issues
 // ==/UserScript==
 
 /*
