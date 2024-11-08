@@ -13,7 +13,7 @@
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
-// @require     https://cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js
+// @require     https://cdn.jsdelivr.net/npm/protobufjs@7.1.2/dist/protobuf.js#sha256-6ae1445115d49dac60b8a69e37bd3a2eb6e42120d75f22879a9286b7061608ec
 // ==/UserScript==
 
 /*
