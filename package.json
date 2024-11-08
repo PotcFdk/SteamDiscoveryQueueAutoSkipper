@@ -2,6 +2,7 @@
   "name": "steamdiscoveryqueueautoskipper",
   "version": "0.0.0",
   "description": "https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper",
+  "type": "module",
   "private": true,
   "dependencies": {},
   "devDependencies": {
