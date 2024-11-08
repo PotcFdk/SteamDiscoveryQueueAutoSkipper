@@ -19,7 +19,7 @@
 // ==/UserScript==
 
 /*
-	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2023
+	Steam Discovery Queue Auto-Skipper - Copyright (c) PotcFdk, 2015 - 2024
 	Project logo donated to the project by krys (krys#4143), 2020
 
 	Licensed under the Apache License, Version 2.0 (the "License");
