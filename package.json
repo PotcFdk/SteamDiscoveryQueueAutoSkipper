@@ -1,0 +1,25 @@
+{
+  "name": "steamdiscoveryqueueautoskipper",
+  "version": "0.0.0",
+  "description": "https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^2.10.1",
+    "eslint": "^9.14.0",
+    "eslint-plugin-jsdoc": "^50.4.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper.git"
+  },
+  "author": "PotcFdk",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/issues"
+  },
+  "homepage": "https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper#readme"
+}
