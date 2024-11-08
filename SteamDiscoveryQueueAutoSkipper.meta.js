@@ -14,4 +14,6 @@
 // @icon        https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/logo.png
 // @downloadURL https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.user.js
 // @updateURL   https://raw.githubusercontent.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/master/SteamDiscoveryQueueAutoSkipper.meta.js
+// @homepageURL https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper
+// @supportURL  https://github.com/PotcFdk/SteamDiscoveryQueueAutoSkipper/issues
 // ==/UserScript==
