@@ -42,6 +42,13 @@ Logo kindly provided by krys (krys#4143).
 
 ## Release Notes
 
+### 1.0.0 (released 2024-11-08)
+- REFACTOR: Big code rearrangement
+- META: Add `@homepageURL` and `@supportURL` metadata fields to JS files
+- ORG: Start using git-flow with a (master/develop) branch layout
+- ORG: Add ESLint config
+- FIX: Two instances of `return` being used outside of a function (this should make the script a bit more compatible)
+
 ### 0.13.0 (released 2023-12-24)
 - NEW: Add a progress bar to the discovery queue handler.
 
